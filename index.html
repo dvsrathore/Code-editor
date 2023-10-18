@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Code Editor</title>
+    <style>
+        /* BEM style CSS classes */
+        .code-editor {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .code-editor__editor {
+            width: 50%;
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            white-space: pre-wrap;
+        }
+
+        .code-editor__preview {
+            width: 50%;
+            height: 400px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            white-space: pre-wrap;
+        }
+
+        .code-editor__controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .code-editor__button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .code-editor__button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Advanced Code Editor</h1>
+    <div class="code-editor">
+        <textarea class="code-editor__editor" id="code-editor"></textarea>
+        <div class="code-editor__preview" id="preview"></div>
+        <div class="code-editor__controls">
+            <button class="code-editor__button" id="copy-button">Copy</button>
+            <button class="code-editor__button" id="save-button">Save</button>
+            <button class="code-editor__button" id="lock-button">Lock</button>
+        </div>
+    </div>
+
+    <script>
+        const codeEditor = document.getElementById("code-editor");
+        const preview = document.getElementById("preview");
+        const copyButton = document.getElementById("copy-button");
+        const saveButton = document.getElementById("save-button");
+        const lockButton = document.getElementById("lock-button");
+
+        // Add event listeners
+        codeEditor.addEventListener("input", updatePreview);
+        copyButton.addEventListener("click", copyToClipboard);
+        lockButton.addEventListener("click", toggleLock);
+        saveButton.addEventListener("click", saveCode);
+
+        // Initialize the editor as unlocked
+        let isLocked = false;
+
+        function updatePreview() {
+            const code = codeEditor.value;
+            const indentedCode = isLocked ? indentCode(code) : code;
+            preview.textContent = indentedCode;
+        }
+
+        function copyToClipboard() {
+            codeEditor.select();
+            document.execCommand("copy");
+        }
+
+        function toggleLock() {
+            isLocked = !isLocked;
+            lockButton.textContent = isLocked ? "Unlock" : "Lock";
+            updatePreview();
+        }
+
+        function indentCode(code) {
+            // Basic code indentation (add four spaces before each line)
+            return code.replace(/^/gm, "    ");
+        }
+
+        function saveCode() {
+            // This is where you can implement code saving functionality
+            alert("Code saved!");
+        }
+    </script>
+</body>
+</html>
